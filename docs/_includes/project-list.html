@@ -1,0 +1,39 @@
+{% for project in site.projects %}
+
+<a class="project uk-card uk-card-default uk-grid-collapse uk-child-width-1-2@s uk-margin uk-link-toggle"
+    href="{{ project.url | relative_url }}" uk-grid>
+    <div class="uk-card-media-left uk-cover-container uk-link-toggle">
+        <img src="{{ project.meta.assets.cover }}" alt="cover" uk-cover>
+        <canvas height="250" width=""></canvas>
+    </div>
+    <div>
+        <div class="uk-card-body">
+            {% include status.html status=project.meta.status card=true %}
+            <h3 class="uk-card-title uk-link-heading">{{ project.meta.name }}</h3>
+            <div class="uk-text-meta uk-flex uk-flex-middle uk-margin-bottom">
+                <i class="uk-text-danger fas fa-map-marker-alt"></i>
+                <span class="uk-margin-small-left">{{ project.meta.location.name | upcase }}</span>
+            </div>
+            <dl class="uk-description-list">
+                <dt class="uk-flex uk-flex-middle">
+                    Started
+                </dt>
+                <dd>
+                    {% if project.meta.start_date == nil %}
+                    Not Started
+                    {% else %}
+                    {{ project.meta.start_date | date_to_long_string: "ordinal" }}
+                    {% endif %}
+                </dd>
+                <dt class="uk-flex uk-flex-middle">
+                    Client
+                </dt>
+                <dd>
+                    {{ project.meta.client }}
+                </dd>
+            </dl>
+        </div>
+    </div>
+</a>
+
+{% endfor %}

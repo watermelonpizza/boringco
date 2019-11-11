@@ -1,0 +1,17 @@
+<div class="
+    uk-label
+    {% if include.card %}
+        uk-card-badge
+    {% endif %}
+    {% assign status = include.status | downcase %}
+    {% if status == 'complete' %}
+        uk-label-success
+    {% elsif status == 'conceptual' %}
+        uk-label-purple
+    {% elsif status != 'under construction' %}
+        uk-label-default
+    {% endif %}
+    "
+    >
+    {{ include.status }}
+</div>

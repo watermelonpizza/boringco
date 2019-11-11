@@ -1,0 +1,14 @@
+.uk-label {
+    &.uk-label-default {
+        background-color: #999;
+    }
+
+    &.uk-label-purple {
+        background-color: purple;
+    }
+
+    &.uk-card-badge {
+        top: 15px;
+        right: 15px;
+    }
+}

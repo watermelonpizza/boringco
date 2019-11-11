@@ -1,0 +1,138 @@
+---
+layout: default
+---
+<h1 class="uk-heading-line uk-text-center">
+    <span>
+        <span class="uk-margin-small-right">{{ page.meta.name }}</span>
+        {% include status.html status=page.meta.status %}
+    </span>
+</h1>
+
+{% if page.meta.official_url != nil %}
+<a href="{{ page.meta.official_url }}" target="_blank">
+    <i class="fas fa-link uk-margin-small-right"></i>
+    <span>Official Link</span>
+</a>
+{% endif %}
+
+<h4 class="uk-flex uk-flex-middle uk-margin-bottom uk-margin-top">
+    {% if page.meta.location.map_url == nil %}
+    <i class="uk-text-danger fas fa-map-marker-alt uk-margin-small-right"></i>
+    <span>{{ page.meta.location.name | upcase }}</span>
+    {% else %}
+    <a class="uk-link-heading" href="{{page.meta.location.map_url}}" target="_blank">
+        <i class="uk-text-danger fas fa-map-marker-alt uk-margin-small-right"></i>
+        <span>{{ page.meta.location.name | upcase }}</span>
+    </a>
+    {% endif %}
+</h4>
+
+<hr class="uk-divider-icon">
+
+<div class="uk-margin-large-bottom" uk-scrollspy="cls: uk-animation-slide-bottom-small; target: .uk-card; delay: 200">
+    <h3 class="uk-flex uk-flex-middle">
+        <i class="fas fa-circle uk-margin-small-right"></i>
+        Tunnel
+    </h3>
+    <div class="uk-card uk-card-default uk-card-body uk-padding-small">
+        <dl class="uk-description-list">
+            <dt>Length</dt>
+            <dd>{{ page.meta.length_kilometres }}km</dd>
+            <dt>Estimated Throughput</dt>
+            <dd>{{ page.meta.estimated_throughput_per_hour }} / hour</dd>
+            <dt>Entry/Exit Method</dt>
+            <dd>{{ page.meta.entry_method | capitalize }}</dd>
+            {% if page.meta.likelyhood_completion != 'complete' %}
+            <dt>Likelyhood of Completion</dt>
+            <dd>{{ page.meta.likelyhood_completion }}</dd>
+            {% endif %}
+            {% if page.meta.progress > 0 and page.meta.progress < 100 %}
+            <dt>Progress</dt>
+            <dd class="uk-flex uk-flex-middle">
+                <span class="uk-margin-small-right">~{{ page.meta.progress }}%</span>
+                <progress class="uk-progress" value="{{ page.meta.progress }}" max="100"></progress>
+            </dd>
+            {% endif %}
+        </dl>
+
+    </div>
+
+    <h3 class="uk-flex uk-flex-middle">
+        <i class="fas fa-street-view uk-margin-small-right" style="color: #9d7a3a;"></i>
+        Stations
+    </h3>
+    <div class="uk-card uk-card-default uk-card-body uk-padding-small">
+        {% if page.meta.stations.above_ground == 0 and page.meta.stations.below_ground == 0 %}
+        <span class="uk-text-muted">N/A</span>
+        {% else %}
+        <dl class="uk-description-list">
+            <dt>Above Ground</dt>
+            <dd>{{ page.meta.stations.above_ground }}</dd>
+            <dt>Below Ground</dt>
+            <dd>{{ page.meta.stations.below_ground }}</dd>
+        </dl>
+        {% endif %}
+    </div>
+
+    <h3 class="uk-flex uk-flex-middle">
+        <i class="fas fa-tools uk-margin-small-right" style="color: #22b8cf;"></i>
+        Machines
+    </h3>
+    <div class="uk-card uk-card-default uk-card-body uk-padding-small">
+        {{ page.meta.machine | capitalize }}
+    </div>
+
+    <h3 class="uk-flex uk-flex-middle">
+        <i class="fas fa-calendar-week uk-margin-small-right" style="color: #be4bdb;"></i>
+        Dates
+    </h3>
+    <div class="uk-card uk-card-default uk-card-body uk-padding-small">
+        <dl class="uk-description-list">
+            <dt>Started</dt>
+            <dd>
+                {% if page.meta.start_date == nil %}
+                <span class="uk-text-muted">Not Started</span>
+                {% else %}
+                {{ page.meta.start_date | date_to_long_string: "ordinal" }}
+                {% endif %}
+            </dd>
+            <dt class="uk-flex uk-flex-middle">
+                {% if page.meta.estimated_finish_date == nil %}
+                Finished
+                {% else %}
+                Estimated Finish
+                {% endif %}
+            </dt>
+            <dd>
+                {% if page.meta.estimated_finish_date != nil %}
+                {{ page.meta.estimated_finish_date | date_to_long_string: "ordinal" }}
+                {% elsif page.meta.finish_date != nil %}
+                {{ page.meta.finish_date | date_to_long_string: "ordinal" }}
+                {% else %}
+                <span class="uk-text-muted">Unknown</span>
+                {% endif %}
+            </dd>
+        </dl>
+    </div>
+
+    <h3 class="uk-flex uk-flex-middle">
+        <i class="fas fa-money-check-alt uk-margin-small-right" style="color: #16c60c;"></i>
+        Funding
+    </h3>
+    <div class="uk-card uk-card-default uk-card-body uk-padding-small">
+        {% assign funding = page.meta.funding | downcase %}
+        {% if funding == 'self funded' %}
+        <em>{{ page.meta.funding }}</em>
+        {% elsif funding == 'unknown' %}
+        <span class="uk-text-muted">Unknown source</span>
+        {% else %}
+        <strong>{{ page.meta.funding }}</strong>
+        {% endif %}
+        <span class="uk-text-muted">at</span>
+        <strong>${{ page.meta.value_millions }}M</strong> USD
+        <span class="uk-text-muted">for</span>
+        <strong>{{ page.meta.client }}</strong>
+    </div>
+</div>
+
+<img src="{{ page.meta.assets.hero }}" />
